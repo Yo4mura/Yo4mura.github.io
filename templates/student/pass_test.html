@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background-color: #f8f9fa; margin: 20px; }
+        h1 { text-align: center; margin-bottom: 20px; font-size: 36px; }
+        .form-container { max-width: 700px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .progress-container { margin-bottom: 15px; background: #e0e0e0; height: 20px; border-radius: 10px; }
+        .progress-bar { background-color: #4caf50; height: 100%; border-radius: 10px; text-align: center; color: white; line-height: 20px; font-size: 14px; }
+        .question { margin-bottom: 20px; }
+        .question h3 { font-size: 20px; margin-bottom: 10px; }
+        button { width: 100%; padding: 15px; background-color: #007bff; color: white; border: none; font-size: 18px; cursor: pointer; border-radius: 5px; }
+        button:hover { background-color: #0056b3; }
+        label { display: block; margin: 8px 0; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Test {{ test_id }}</h1>
+    <div class="form-container">
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar" style="width: 0%;">0%</div>
+        </div>
+        <form method="POST" id="testForm">
+            {% for question_id, question in questions.items() %}
+                <div class="question">
+                    <h3>{{ loop.index }}. {{ question.text }}</h3> 
+                    {% for option in question.options %}
+                        <label>
+                            <input type="radio" name="{{ question_id }}" value="{{ option.id }}">
+                            {{ option.text }}
+                        </label>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <button type="submit">Завершить</button>
+        </form>
+    </div>
+    <body data-total-questions="{{ questions|length }}">
+    <script>
+    const totalQuestions = parseInt(document.body.dataset.totalQuestions, 10);
+    const answers = document.querySelectorAll('input[type="radio"]');
+    const progressBar = document.getElementById('progressBar');
+    let answeredCount = 0;
+    answers.forEach(answer => {
+        answer.addEventListener('change', () => {
+            const answeredQuestions = new Set();
+            document.querySelectorAll('input[type="radio"]:checked').forEach(input => {
+                answeredQuestions.add(input.name);
+            });
+            answeredCount = answeredQuestions.size;
+            const progress = Math.round((answeredCount / totalQuestions) * 100);
+            progressBar.style.width = progress + '%';
+            progressBar.textContent = progress + '%';
+        });
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Онлайн тест</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column; 
+            font-family: Arial, sans-serif;
+            align-items: center;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        header {
+            width: 100%;
+            height: 60px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 60px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header .logo {
+            font-size: 36px;
+            font-weight: bold;
+            color: #000000;
+        }
+
+        header nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        header a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 20px;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        header a:hover {
+            color: #173d66;
+            transform: scale(1.1);
+        }
+        nav a:hover {
+            color: #0056b3;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 48px; /* Увеличиваем размер заголовка */
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 22px; /* Увеличиваем размер текста */
+            margin: 20px 0;
+        }
+
+        .form-container {
+            max-width: 500px; /* Увеличиваем ширину контейнера формы */
+            margin: 40px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container input,
+        .form-container select {
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 18px; 
+        }
+
+        .form-container select {
+            appearance: none; 
+            background: #f8f9fa url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iNiIgdmlld0JveD0iMCAwIDE2IDYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgZmlsbD0ibm9uZSIgeG1zbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxwYXRoIGQ9Ik0xLjk2IDBsNi4wNDcgNS45OTYgNi4wNDctNS45OTZIMSIgZmlsbD0iIzY4NkI3QiIvPjwvc3ZnPg==') no-repeat right 10px center;
+            background-size: 16px 6px;
+            padding-right: 40px;
+            cursor: pointer;
+        }
+
+        .form-container select:hover {
+            border-color: #007bff;
+        }
+
+        .form-container select:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+        }
+
+        .form-container button {
+            width: 100%;
+            padding: 15px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            font-size: 18px; /* Увеличиваем размер текста на кнопке */
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+        .spacer {
+            flex-grow: 1;
+        }
+        footer {
+            font-size: 18px; 
+            color: #6c757d;
+        }
+        .password-info {
+        font-size: 14px;
+        color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">AITU Test</div>
+        <nav>
+            <a href="/">Главная</a>
+        </nav>
+    </header>
+    <div class="container">
+        <h1>Регистрация</h1>
+        <div class="form-container">
+            <form action="/register" method="post">
+                <input type="text" name="first_name" placeholder="Имя" required>
+                <input type="text" name="last_name" placeholder="Фамилия" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Пароль" required>
+                <div class="password-info">
+                    Пароль должен содержать минимум 8 символов, включая буквы a-z, A-Z,
+                    цифры и специальные символы: !, @, #, %, ^, &, *, (, ), ~.
+                </div>
+                <select name="role" id="role-select" onchange="toggleFields()" required>
+                    <option value="">Выберите роль</option>
+                    <option value="student">Студент</option>
+                    <option value="teacher">Учитель</option>
+                </select>
+                <div id="group-field" style="display: none;">
+                    <label for="group">Выберите группу:</label>
+                    <select name="group_id">
+                        <option value="1">ПО2301</option>
+                        <option value="2">ПО2302</option>
+                        <option value="3">ПО2303</option>
+                        <option value="4">ПО2304</option>
+                        <option value="5">ПО2305</option>
+                        <option value="6">ПО2306</option>
+                        <option value="7">ПО2307</option>
+                        <option value="8">ПО2308</option>
+                        <option value="9">ПО2309</option>
+                        <option value="10">ВТ2310</option>
+                    </select>
+                </div>
+                <div id="subject-field" style="display: none;">
+                    <label for="subject">Введите предмет:</label>
+                    <input type="text" name="subject" placeholder="Математика">
+                </div>
+                <button type="submit">Зарегистрироваться</button>
+            </form>
+        </div>
+        <p>Уже есть аккаунт? <a href="/login">Войти</a>.</p>
+    </div>
+    <div class="spacer"></div>
+    <footer>© 2024 Company, Inc</footer>
+    <script>
+        function toggleFields() {
+            const role = document.getElementById("role-select").value;
+            document.getElementById("subject-field").style.display = role === "teacher" ? "block" : "none";
+            document.getElementById("group-field").style.display = role === "student" ? "block" : "none";
+        }
+        
+    </script>
+</body>
+</html>

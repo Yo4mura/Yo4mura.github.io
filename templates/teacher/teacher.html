@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Назначение тестов</title>
+    <style>
+        /* Сброс базовых отступов и полей */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f8f9fa;
+        }
+
+        header {
+            width: 100%;
+            height: 60px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 60px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header .logo {
+            font-size: 36px;
+            font-weight: bold;
+            color: #000000;
+        }
+
+        header nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        header a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 20px;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        header a:hover {
+            color: #173d66;
+            transform: scale(1.1);
+        }
+        nav a:hover {
+            color: #0056b3;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 48px; /* Увеличиваем размер заголовка */
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 22px; /* Увеличиваем размер текста */
+            margin: 20px 0;
+        }
+
+        .form-container {
+            max-width: 600px; /* Увеличиваем ширину контейнера формы */
+            margin: 40px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container label {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-container input,
+        .form-container select {
+            width: 100%;
+            padding: 15px; /* Увеличиваем размер полей ввода */
+            margin: 15px 0;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 18px; /* Увеличиваем размер шрифта в поле */
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .form-container select {
+            appearance: none; /* Убираем стандартное оформление */
+            background-size: 16px 6px;
+            padding-right: 40px; /* Дополнительный отступ для стрелки */
+            cursor: pointer;
+        }
+
+        .form-container select:hover,
+        .form-container input:hover {
+            border-color: #007bff;
+        }
+
+        .form-container select:focus,
+        .form-container input:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+        }
+
+        .form-container button {
+            width: 100%;
+            padding: 15px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            font-size: 18px; /* Увеличиваем размер текста на кнопке */
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+
+        footer {
+            margin-top: 40px;
+            font-size: 18px; 
+            color: #6c757d;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 80px;
+        }
+
+        .alert {
+            font-size: 16px;
+            color: #4caf50;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">AITU Test</div>
+        <nav>
+            <a href="/">Главная</a>
+        </nav>
+    </header>
+    <div class="container">
+        <h1>Назначение тестов</h1>
+        <div class="form-container">
+            <form id="assignTestForm">
+                <label for="testDropdown">Выберите тест:</label>
+                <select id="testDropdown" name="test_id"></select>
+            
+                <label for="groupDropdown">Выберите группу:</label>
+                <select id="groupDropdown" name="group_id"></select>
+            
+                <label for="dueDate">Дата завершения:</label>
+                <input type="date" id="dueDate" name="due_date" required>
+
+                <label for="dueTime">Время завершения:</label>
+                <input type="time" id="dueTime" name="due_time" required>
+            
+                <button type="submit">Назначить тест</button><br><br>
+                <a href="/main">Назад</a>
+            </form>            
+            <div id="message" class="alert" style="display: none;"></div>
+        </div>
+    </div>
+        <script>
+            async function fetchTeacherTests() {
+                try {
+                    const userId = sessionStorage.getItem('userId'); 
+                    console.log("User ID:", userId);
+                    const response = await fetch(`/api/tests?teacher_id=${userId}`);
+                    const tests = await response.json();
+                    const testDropdown = document.getElementById('testDropdown');
+                    if (tests && tests.length > 0) {
+                        tests.forEach(test => {
+                            const option = document.createElement('option');
+                            option.value = test.id;
+                            option.textContent = test.name;
+                            testDropdown.appendChild(option);
+
+                        });
+                    } else {
+                        console.error('Для этого преподавателя не найдено тестов');
+                    }
+                } catch (error) {
+                    console.error('Ошибка при получении тестов.:', error);
+                }
+            }
+        
+            async function fetchGroups() {
+        try {
+            const response = await fetch('/get_groups');
+            const groups = await response.json();
+            console.log('Группы получили:', groups); 
+            const groupDropdown = document.getElementById('groupDropdown');
+            groups.forEach(group => {
+                const option = document.createElement('option');
+                option.value = group.id;
+                option.textContent = group.name;
+                groupDropdown.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Ошибка при получении групп.:', error);
+        }
+    }
+        
+            document.addEventListener('DOMContentLoaded', async () => {
+                await fetchTeacherTests();
+                await fetchGroups();
+            
+                document.getElementById('assignTestForm').addEventListener('submit', async (event) => {
+                    event.preventDefault();
+                    const formData = new FormData(event.target);
+                    const dueDate = formData.get('due_date');
+                    const dueTime = formData.get('due_time');
+                    const data = {
+                        test_id: formData.get('test_id'),
+                        group_id: formData.get('group_id'),
+                        due_date: `${dueDate}T${dueTime}` // Формат ISO 8601
+                    };
+
+                    try {
+                        const response = await fetch('/api/assign-test', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        });
+
+                        const messageDiv = document.getElementById('message');
+                        if (response.ok) {
+                            messageDiv.textContent = 'Тест успешно назначен группе!';
+                            messageDiv.style.display = 'block';
+                        } else {
+                            messageDiv.textContent = 'Ошибка при назначении теста.';
+                            messageDiv.style.display = 'block';
+                        }
+                    } catch (error) {
+                        console.error('Ошибка назначения теста:', error);
+                        const messageDiv = document.getElementById('message');
+                        messageDiv.textContent = 'Ошибка при назначении теста.';
+                        messageDiv.style.display = 'block';
+                    }
+                });
+            });
+        </script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результаты тестов</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f8f9fa;
+            margin: 0;
+        }
+        header {
+            width: 100%;
+            height: 60px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 60px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        header .logo {
+            font-size: 36px;
+            font-weight: bold;
+            color: #000000;
+        }
+        header nav {
+            display: flex;
+            gap: 20px;
+        }
+        header a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 20px;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        header a:hover {
+            color: #173d66;
+            transform: scale(1.1);
+        }
+        nav a:hover {
+            color: #0056b3;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 40px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 48px;
+            font-weight: bold;
+        }
+        p {
+            font-size: 22px;
+            margin: 20px 0;
+        }
+        .form-container {
+            max-width: 500px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .form-container select,
+        .form-container button {
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 18px;
+        }
+        .form-container button {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #ced4da;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-size: 20px;
+        }
+
+        td {
+            font-size: 18px;
+        }
+
+        .alert {
+            color: red;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">AITU Test</div>
+        <nav>
+            <a href="/">Главная</a>
+        </nav>
+    </header>
+    <div class="container">
+        <h1>Результаты тестов</h1>
+        <div class="form-container">
+            <label for="testDropdown">Выберите тест:</label>
+            <select id="testDropdown" name="test_id"></select>
+            <button id="viewResults" class="btn">Просмотреть результаты</button>
+            <a href="/main">Назад</a>
+        </div>
+        <table id="resultsTable" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Имя студента</th>
+                    <th>Группа</th>
+                    <th>Результат</th>
+                    <th>Дата завершения</th>
+                </tr>
+            </thead>
+            <tbody id="resultsBody">
+                <!-- Данные будут добавлены через JavaScript -->
+            </tbody>
+        </table>
+        <div id="message" class="alert" style="display: none;"></div>
+    </div>
+
+    <script>
+        async function fetchTeacherTests() {
+            try {
+                const teacherId = 8; 
+                const response = await fetch(`/api/tests?teacher_id=${teacherId}`);
+                const tests = await response.json();
+                const testDropdown = document.getElementById('testDropdown');
+                testDropdown.innerHTML = ''; 
+
+                if (tests.length > 0) {
+                    tests.forEach(test => {
+                        const option = document.createElement('option');
+                        option.value = test.id;
+                        option.textContent = test.name;
+                        testDropdown.appendChild(option);
+                    });
+                } else {
+                    const messageDiv = document.getElementById('message');
+                    messageDiv.textContent = 'Тесты отсутствуют.';
+                    messageDiv.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Ошибка при загрузке тестов:', error);
+            }
+        }
+
+        async function fetchTestResults(testId) {
+            try {
+                const response = await fetch(`/api/test-results?test_id=${testId}`);
+                const results = await response.json();
+                const resultsTable = document.getElementById('resultsTable');
+                const resultsBody = document.getElementById('resultsBody');
+                resultsBody.innerHTML = '';
+                if (results.length > 0) {
+                    results.forEach(result => {
+                        const row = document.createElement('tr');
+
+                        const studentCell = document.createElement('td');
+                        studentCell.textContent = result.student_name;
+                        row.appendChild(studentCell);
+
+                        const groupCell = document.createElement('td');
+                        groupCell.textContent = result.group_name;
+                        row.appendChild(groupCell);
+
+                        const scoreCell = document.createElement('td');
+                        scoreCell.textContent = `${result.score}/${result.total}`;
+                        row.appendChild(scoreCell);
+
+                        const dateCell = document.createElement('td'); 
+                        const formattedDate = new Date(result.completed_at);
+                        const localizedDate = formattedDate.toLocaleString('ru-RU', {
+                            timeZone: 'Asia/Qyzylorda',
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit'
+                        });
+                        dateCell.textContent = localizedDate;
+                        row.appendChild(dateCell);
+                        console.log(result.completed_at); 
+                        resultsBody.appendChild(row);
+                    });
+                    resultsTable.style.display = 'table';
+                } else {
+                    resultsTable.style.display = 'none';
+                    const messageDiv = document.getElementById('message');
+                    messageDiv.textContent = 'Результаты отсутствуют.';
+                    messageDiv.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Ошибка при загрузке результатов:', error);
+                const messageDiv = document.getElementById('message');
+                messageDiv.textContent = 'Ошибка при загрузке данных.';
+                messageDiv.style.display = 'block';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', async () => {
+            await fetchTeacherTests();
+            document.getElementById('viewResults').addEventListener('click', async () => {
+                const testDropdown = document.getElementById('testDropdown');
+                const selectedTestId = testDropdown.value;
+                if (selectedTestId) {
+                    await fetchTestResults(selectedTestId);
+                } else {
+                    const messageDiv = document.getElementById('message');
+                    messageDiv.textContent = 'Пожалуйста, выберите тест.';
+                    messageDiv.style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

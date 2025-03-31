@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создание теста</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            margin-top: 40px;
+            font-size: 32px;
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 40px;
+            width: 90%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        form input,
+        form select,
+        form button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        form button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        form button:hover {
+            background-color: #0056b3;
+        }
+
+        .add-btn {
+            background-color: #4caf50;
+        }
+
+        .add-btn:hover {
+            background-color: #388e3c;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+            margin-top: 10px;
+            text-align: center;
+            display: block;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+
+        .question-block {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Создать тест</h1>
+    <form id="createTestForm" method="POST" action="/create_test" onsubmit="saveTest(event)">
+        <input type="text" name="test_name" id="test-name" placeholder="Название теста">
+        <div id="questions-container">
+            <div class="question-block" data-question-index="0">
+                <input type="text" name="question_0" placeholder="Введите вопрос 1">
+                <input type="text" name="option_0_0" placeholder="Вариант 1">
+                <input type="text" name="option_0_1" placeholder="Вариант 2">
+                <input type="text" name="option_0_2" placeholder="Вариант 3">
+                <input type="text" name="option_0_3" placeholder="Вариант 4">
+                <select name="correct_option_0">
+                    <option value="0">Вариант 1</option>
+                    <option value="1">Вариант 2</option>
+                    <option value="2">Вариант 3</option>
+                    <option value="3">Вариант 4</option>
+                </select>
+            </div>
+        </div>
+        <button type="button" class="add-btn" onclick="addQuestion()">Добавить вопрос</button>
+        <button type="submit">Создать</button>
+        <a href="/main">Назад</a>
+    </form>
+    <script>
+        let testData = {
+            test_name: '',
+            questions: []
+        };
+        let questionCount = 0;
+        function addQuestion() {
+            questionCount++;
+            const questionBlock = document.createElement('div');
+            questionBlock.classList.add('question-block');
+            questionBlock.dataset.questionIndex = questionCount;
+            questionBlock.innerHTML = `
+                <input type="text" name="question_${questionCount}" placeholder="Введите вопрос ${questionCount + 1}">
+                <input type="text" name="option_${questionCount}_0" placeholder="Вариант 1">
+                <input type="text" name="option_${questionCount}_1" placeholder="Вариант 2">
+                <input type="text" name="option_${questionCount}_2" placeholder="Вариант 3">
+                <input type="text" name="option_${questionCount}_3" placeholder="Вариант 4">
+                <select name="correct_option_${questionCount}">
+                    <option value="0">Вариант 1</option>
+                    <option value="1">Вариант 2</option>
+                    <option value="2">Вариант 3</option>
+                    <option value="3">Вариант 4</option>
+                </select>
+            `;
+            document.getElementById('questions-container').appendChild(questionBlock);
+        }
+        function saveTest(event) {
+            event.preventDefault(); 
+            testData.test_name = document.getElementById('test-name').value; 
+            testData.questions = [];
+            const questionBlocks = document.querySelectorAll('.question-block');
+            questionBlocks.forEach((block, index) => {
+                const questionText = block.querySelector(`input[name="question_${index}"]`).value;
+                const optionInputs = block.querySelectorAll(`input[name^="option_${index}"]`);
+                const correctOption = block.querySelector(`select[name="correct_option_${index}"]`).value;
+                const questionData = {
+                    text: questionText,
+                    options: [],
+                    correct_answer_id: Number(correctOption)
+                };
+                optionInputs.forEach(input => questionData.options.push(input.value));
+                testData.questions.push(questionData);
+            });
+            fetch('/create_test', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(testData) 
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Тест успешно создан:', data);
+                alert('Тест успешно создан!');
+            })
+            .catch(error => {
+                console.error('Ошибка при создании теста:', error);
+                alert('Ошибка при создании теста');
+            });
+        }
+    </script>  
+</body>
+</html>
