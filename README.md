@@ -3,9 +3,11 @@
 # Скриншоты
 <img width="887" alt="Снимок экрана 2025-04-11 в 15 34 26" src="https://github.com/user-attachments/assets/acadf957-618f-42f8-9a72-0272d9cec154" />
 <img width="1027" alt="Снимок экрана 2025-04-11 в 15 36 09" src="https://github.com/user-attachments/assets/ecd7621b-ea58-463c-a6a3-45c762cecbc8" />
+
 ## Технологии
 Flask для backend, PostgreSQL для СУБД, HTML и CSS для frontend и Python
-## Как использовать (гайд)
+
+## Как использовать
 1. Установите виртуальное окружение venv
    
 ```
