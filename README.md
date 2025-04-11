@@ -1,14 +1,12 @@
 # aitu test
 создание веб-приложения для проведения онлайн-тестирования
 # Скриншоты
-<img width="887" alt="Снимок экрана 2025-04-11 в 15 34 26" src="https://github.com/user-attachments/assets/acadf957-618f-42f8-9a72-0272d9cec154" />
-<img width="887" alt="Снимок экрана 2025-04-11 в 15 34 26" src="https://github.com/user-attachments/assets/4ebea900-4cc6-478f-87a9-7fa3b9aeb7d5" />
-<img width="1027" alt="Снимок экрана 2025-04-11 в 15 36 09" src="https://github.com/user-attachments/assets/c12f4006-99da-4a01-b0ca-eefc307bc34b" />
-<img width="845" alt="Снимок экрана 2025-04-11 в 16 07 27" src="https://github.com/user-attachments/assets/1895ed31-a462-472e-be8b-59e0177cfbd4" />
-<img width="703" alt="Снимок экрана 2025-04-11 в 16 08 09" src="https://github.com/user-attachments/assets/ffe8f0fd-1c2e-4a07-b3b7-f3f9e030950a" />
-<img width="793" alt="Снимок экрана 2025-04-11 в 16 08 33" src="https://github.com/user-attachments/assets/399a2f4f-2e9d-41b8-a344-3531be1cf65b" />
+<img width="845" alt="Снимок экрана 2025-04-11 в 16 07 27" src="https://github.com/user-attachments/assets/24b36d77-044c-4ec8-ad79-6bf921e06f42" />
+<img width="703" alt="Снимок экрана 2025-04-11 в 16 08 09" src="https://github.com/user-attachments/assets/a253c6bb-c4bb-4475-952f-fc70607a76d5" />
+<img width="793" alt="Снимок экрана 2025-04-11 в 16 08 33" src="https://github.com/user-attachments/assets/3e99cfb2-c642-43de-9b34-61d9ee62bb02" />
+<img width="1680" alt="Снимок экрана 2025-04-10 в 04 16 39" src="https://github.com/user-attachments/assets/ce3f59aa-e1b8-4d53-8ca4-b7fa1af294ef" />
 
-<img width="1027" alt="Снимок экрана 2025-04-11 в 15 36 09" src="https://github.com/user-attachments/assets/ecd7621b-ea58-463c-a6a3-45c762cecbc8" />
+<img width="1027" alt="Снимок экрана 2025-04-11 в 15 36 09" src="https://github.com/user-attachments/assets/14aa84c6-7c6e-4f01-9ff0-a2edebb61421" />
 
 ## Технологии
 Flask для backend, PostgreSQL для СУБД, HTML и CSS для frontend и Python
