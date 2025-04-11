@@ -45,7 +45,7 @@ pip install itsdangerous
 6. запустите app.py
 7. в терминале покажется это
    <img width="906" alt="Снимок экрана 2025-04-11 в 16 12 46" src="https://github.com/user-attachments/assets/1e004173-4434-4faf-b9be-bcca6067afa8" />
-8. запускайте
+8. запустите зажав на control и нажмите на ```http://127.0.0.1:5000```
 
 ## Участники проекта
 https://github.com/alkun21
