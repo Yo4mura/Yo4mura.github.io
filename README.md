@@ -4,7 +4,7 @@
 <img width="845" alt="Снимок экрана 2025-04-11 в 16 07 27" src="https://github.com/user-attachments/assets/24b36d77-044c-4ec8-ad79-6bf921e06f42" />
 <img width="703" alt="Снимок экрана 2025-04-11 в 16 08 09" src="https://github.com/user-attachments/assets/a253c6bb-c4bb-4475-952f-fc70607a76d5" />
 <img width="793" alt="Снимок экрана 2025-04-11 в 16 08 33" src="https://github.com/user-attachments/assets/3e99cfb2-c642-43de-9b34-61d9ee62bb02" />
-<img width="1680" alt="Снимок экрана 2025-04-10 в 04 16 39" src="https://github.com/user-attachments/assets/ce3f59aa-e1b8-4d53-8ca4-b7fa1af294ef" />
+
 
 <img width="1027" alt="Снимок экрана 2025-04-11 в 15 36 09" src="https://github.com/user-attachments/assets/14aa84c6-7c6e-4f01-9ff0-a2edebb61421" />
 
