@@ -7,10 +7,12 @@
 Flask для backend, PostgreSQL для СУБД, HTML и CSS для frontend и Python
 ## Как использовать (гайд)
 1. Установите виртуальное окружение venv
+   
 ```
 python -m venv venv
 ```
 -для MacOS и Linux 
+
 ```
 source venv/bin/activate
 ```
