@@ -48,7 +48,8 @@ pip install itsdangerous
 8. запустите зажав на control и нажмите на ```http://127.0.0.1:5000```
 
 ## Участники проекта
-https://github.com/alkun21
-https://github.com/h1zaweeeq
+alkun:https://github.com/alkun21
+
+hizaweeeq:https://github.com/h1zaweeeq
 
 
